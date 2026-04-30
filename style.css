@@ -3,6 +3,10 @@ html {
     display: inline-block;
     text-align: center;
 }
+
+@page {
+    page-orientation: rotate-left;
+}
 h1 {
     font-size: 1.8rem;
     color: white;
@@ -36,7 +40,6 @@ button {
 
 
 .onButton{
-    transform: rotate(-90deg);
     background-color: #FF0000;
     color: white;
     font-size: 60px;
