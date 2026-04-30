@@ -36,7 +36,7 @@ button {
 
 
 .onButton{
-    background-color: #FF0000 ;
+    background-color: #FF0000;
     color: white;
     font-size: 60px;
     padding: 20px;
@@ -51,7 +51,7 @@ button {
 }
 
 .onButton:active{
-    background-color: #7a0000 ;
+    background-color: #ffe600;
     color: white;
     font-size: 60px;
     padding: 20px;
