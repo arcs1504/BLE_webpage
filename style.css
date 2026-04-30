@@ -4,9 +4,6 @@ html {
     text-align: center;
 }
 
-@page {
-    page-orientation: rotate-left;
-}
 h1 {
     font-size: 1.8rem;
     color: white;
@@ -38,6 +35,9 @@ button {
     border-radius: 4px;
 }
 
+.genericButton {
+    background-color: #808080;
+}
 
 .onButton{
     background-color: #FF0000;

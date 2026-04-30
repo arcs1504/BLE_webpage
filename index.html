@@ -9,16 +9,38 @@
 </head>
 <body>
     <div class="content">
-                <p style="text-align: center"><button id="stopButton" class="onButton">Stop motors</button></p>
-                <button id="resetButton" class="offButton">Reset</button>
-                <p>
-                    <button id="connectBleButton" class="connectButton"> Connect to BLE Device</button>
-                    <button id="disconnectBleButton" class="disconnectButton"> Disconnect BLE Device</button>
-                </p>
-                <p class="gray-label">BLE state: <strong><span id="bleState" style="color:#d13a30;">Disconnected</span></strong></p>
+        <p style="text-align: center"><button id="stopButton" class="onButton">Stop motors</button></p>
+        <button id="resetButton" class="offButton">Reset</button>
+        <p>
+            <button id="connectBleButton" class="connectButton"> Connect to BLE Device</button>
+            <button id="disconnectBleButton" class="disconnectButton"> Disconnect BLE Device</button>
+        </p>
+        <p class="gray-label">BLE state: <strong><span id="bleState" style="color:#d13a30;">Disconnected</span></strong></p>
+        <button id="openFullscreen" class="genericButton" onclick="openFullscreen();">Open Fullscreen</button>
+        <button id="closeFullscreen" class="genericButton" onclick="closeFullscreen();">Close Fullscreen</button>
     </div>
 </body>
 <script>
+    var elem = document.documentElement;
+    function openFullscreen() {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+            elem.msRequestFullscreen();
+        }
+    }
+
+    function closeFullscreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
+        }
+    }
     // DOM Elements
     const connectButton = document.getElementById('connectBleButton');
     const disconnectButton = document.getElementById('disconnectBleButton');
