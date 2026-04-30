@@ -36,6 +36,7 @@ button {
 
 
 .onButton{
+    transform: rotate(-90deg);
     background-color: #FF0000;
     color: white;
     font-size: 60px;
