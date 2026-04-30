@@ -50,6 +50,21 @@ button {
     border-radius: 50%; 
 }
 
+.onButton:active{
+    background-color: #7a0000 ;
+    color: white;
+    font-size: 60px;
+    padding: 20px;
+    border: none;
+    text-align: center;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%; 
+}
+
 .offButton{
     background-color: #808080;
 }
