@@ -7,18 +7,32 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="UTF-8">
 </head>
+
+
 <body>
-    <div class="content" style>
-        <p style="text-align: center"><button id="stopButton" class="onButton">Stop motors</button></p>
-        <button id="resetButton" class="offButton">Reset</button>
-        <p>
-            <button id="connectBleButton" class="connectButton"> Connect to BLE Device</button>
-            <button id="disconnectBleButton" class="disconnectButton"> Disconnect BLE Device</button>
-        </p>
-        <p class="gray-label">BLE state: <strong><span id="bleState" style="color:#d13a30;">Disconnected</span></strong></p>
+  <div class="content">
+    <div class="control-panel">
+      <div class="left-panel">
+        <div class="button-row">
+          <button id="connectBleButton" class="connectButton">Connect</button>
+          <button id="disconnectBleButton" class="disconnectButton">Disconnect</button>
+          <button id="resetButton" class="offButton">Reset</button>
+        </div>
+
+        <div class="status-box">
+          <p class="gray-label">
+            BLE state: <strong><span id="bleState" style="color:#d13a30;">Disconnected</span></strong>
+          </p>
+        </div>
         <button id="openFullscreen" class="genericButton" onclick="openFullscreen();">Open Fullscreen</button>
         <button id="closeFullscreen" class="genericButton" onclick="closeFullscreen();">Close Fullscreen</button>
+      </div>
+
+      <div class="right-panel">
+        <button id="stopButton" class="onButton">Stop motors</button>
+      </div>
     </div>
+  </div>
 </body>
 <script>
     var elem = document.documentElement;
