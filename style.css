@@ -65,6 +65,11 @@ body {
       color: white;
     }
 
+    .small-input {
+    width: 50px;
+    }
+
+
     .disconnectButton {
       background: #6b7280;
       color: white;
