@@ -27,11 +27,23 @@
             BLE state: <strong><span id="bleState" style="color:#d13a30;">Disconnected</span></strong>
           </p>
         </div>
-        <button id="openFullscreen" class="genericButton" onclick="openFullscreen();">Open Fullscreen</button>
-        <button id="closeFullscreen" class="genericButton" onclick="closeFullscreen();">Close Fullscreen</button>
-      </div>
-    
-      
+
+        <div class="button-row">
+            <form action="/action_page.php">
+                <label for="Height">Height:</label>
+                <input type="text" id="height" height="height">
+                <label for="weight">Weight:</label>
+                <input type="text" id="weight" weight="weight"><br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+
+
+        <div class="button-row">
+            <button id="openFullscreen" class="genericButton" onclick="openFullscreen();">Open Fullscreen</button>
+            <button id="closeFullscreen" class="genericButton" onclick="closeFullscreen();">Close Fullscreen</button>
+        </div>
+        </div>     
       </div>
     
     </div>
