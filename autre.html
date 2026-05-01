@@ -1,4 +1,15 @@
-body {
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ESP32 BLE Control</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f4f6f8;
@@ -111,115 +122,29 @@ body {
         font-size: 24px;
       }
     }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="control-panel">
+      <div class="left-panel">
+        <div class="button-row">
+          <button id="connectBleButton" class="connectButton">Connect</button>
+          <button id="disconnectBleButton" class="disconnectButton">Disconnect</button>
+          <button id="resetButton" class="offButton">Reset</button>
+        </div>
 
+        <div class="status-box">
+          <p class="gray-label">
+            BLE state: <strong><span id="bleState" style="color:#d13a30;">Disconnected</span></strong>
+          </p>
+        </div>
+      </div>
 
-/*
-html {
-    font-family: Arial, Helvetica, sans-serif;
-    display: inline-block;
-    text-align: center;
-}
-
-@page {
-    page-orientation: rotate-left;
-}
-h1 {
-    font-size: 1.8rem;
-    color: white;
-}
-body {
-    margin: 0;
-}
-.content {
-    padding: 50px;
-}
-.card-grid {
-    max-width: 800px;
-    margin: 0 auto;
-    margin-bottom: 30px;
-    display: grid;
-    grid-gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-.card {
-    background-color: white;
-    box-shadow: 2px 2px 12px 1px rgba(140,140,140,.5);
-}
-button {
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-
-.onButton{
-    background-color: #FF0000;
-    color: white;
-    font-size: 60px;
-    padding: 20px;
-    border: none;
-    text-align: center;
-    display: inline-block;
-    margin: 4px 2px;
-    cursor: pointer;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%; 
-}
-
-.onButton:active{
-    background-color: #ffe600;
-    color: white;
-    font-size: 60px;
-    padding: 20px;
-    border: none;
-    text-align: center;
-    display: inline-block;
-    margin: 4px 2px;
-    cursor: pointer;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%; 
-}
-
-.offButton{
-    background-color: #808080;
-    font-size: 50px;
-    display: inline-block;
-    border: none;
-    margin: 4px 2px;
-    text-align: center;
-    vertical-align: middle;
-    padding: 20px;
-}
-
-.offButton:active{
-    background-color: #4a4a4a;
-    font-size: 50px;
-    display: inline-block;
-    border: none;
-    margin: 4px 2px;
-    text-align: center;
-    vertical-align: middle;
-    padding: 20px;
-}
-
-.connectButton{
-    background-color: #24af37;
-}
-
-.disconnectButton{
-    background-color: #d13a30;
-}
-
-.gray-label {
-    color: #bebebe;
-    font-size: 1rem;
-}
-
-.reading {
-    font-size: 1.8rem;
-}*/
+      <div class="right-panel">
+        <button id="stopButton" class="onButton">Stop motors</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
