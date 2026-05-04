@@ -138,6 +138,21 @@ body {
     }
 
 
+    .container {
+  position: relative; /* Container stays in flow */
+  padding: 20px;
+}
+
+.container::before {
+  content: "";
+  background-image: url('BioGenius.png');
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0.5; /* Adjust transparency */
+  z-index: -1; /* Keeps image behind text */
+}
+
+
 /*
 html {
     font-family: Arial, Helvetica, sans-serif;
