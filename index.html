@@ -116,8 +116,8 @@
     disconnectButton.addEventListener('click', disconnectDevice);
 
     // Write to the ESP32 LED Characteristic
-    stopButton.addEventListener('click', () => writeOnCharacteristic(1,1));
-    resetButton.addEventListener('click', () => writeOnCharacteristic(1,2));
+    stopButton.addEventListener('click', () => writeOnCharacteristic("1","1"));
+    resetButton.addEventListener('click', () => writeOnCharacteristic("1","2"));
 
     //envoi taille et poids
 
@@ -132,7 +132,7 @@
     // });
     
     async function sendUserData() {
-        const height = document.getElementById("height").value;
+        const height = (document.getElementById("height").value)*100;
         const weight = document.getElementById("weight").value;
         const userDataState = document.getElementById("userDataState");
         writeOnCharacteristic(2,height);
@@ -234,9 +234,11 @@
     function writeOnCharacteristic(type,value){
         if (bleServer && bleServer.connected) {
             bleServiceFound.getCharacteristic(ledCharacteristic)
+            
             .then(characteristic => {
+                length = String(value).length;
                 console.log("Found the LED characteristic: ", characteristic.uuid);
-                const data = new Uint8Array([type, value]);
+                const data = new Uint8Array([type,999, value,999,length]);
                 return characteristic.writeValue(data);
             })
             .then(() => {
