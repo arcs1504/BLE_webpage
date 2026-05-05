@@ -116,44 +116,50 @@
     disconnectButton.addEventListener('click', disconnectDevice);
 
     // Write to the ESP32 LED Characteristic
-    stopButton.addEventListener('click', () => writeOnCharacteristic(1));
-    resetButton.addEventListener('click', () => writeOnCharacteristic(2));
-
+    stopButton.addEventListener('click', () => writeOnCharacteristic(1,1));
+    resetButton.addEventListener('click', () => writeOnCharacteristic(1,2));
 
     //envoi taille et poids
 
-    userDataForm.addEventListener("submit", function(event) {
-    event.preventDefault();
-    sendUserData();
-});
+    userDataForm.addEventListener("submit", () => {
+        event.preventDefault(); // Prevent form from submitting normally
+        sendUserData();
+    })
+    // userDataForm.addEventListener("submit", function(event) {
+    //     event.preventDefault(); // Prevent form from submitting normally
+    //     writeOnCharacteristic(2,(document.getElementById("height").value));
+    //     writeOnCharacteristic(3,(document.getElementById("weight").value));
+    // });
     
     async function sendUserData() {
-    const height = document.getElementById("height").value;
-    const weight = document.getElementById("weight").value;
-    const userDataState = document.getElementById("userDataState");
+        const height = document.getElementById("height").value;
+        const weight = document.getElementById("weight").value;
+        const userDataState = document.getElementById("userDataState");
+        writeOnCharacteristic(2,height);
+        sleep(2000).then(() => (writeOnCharacteristic(3,weight)));
 
-    if (!height || !weight) {
-        userDataState.textContent = "Enter height and weight.";
-        return;
-    }
+    // if (!height || !weight) {
+    //     userDataState.textContent = "Enter height and weight.";
+    //     return;
+    // }
 
-    if (!bleServer || !bleServer.connected) {
-        userDataState.textContent = "Bluetooth is not connected.";
-        return;
-    }
+    // if (!bleServer || !bleServer.connected) {
+    //     userDataState.textContent = "Bluetooth is not connected.";
+    //     return;
+    // }
 
-    const message = `${height},${weight}`;
-    const data = new TextEncoder().encode(message);
-    //await characteristic.writeValue(data);
+    // const message = `${height},${weight}`;
+    // const data = new TextEncoder().encode(message);
+    // //await characteristic.writeValue(data);
 
-    try {
-        const characteristic = await bleServiceFound.getCharacteristic(ledCharacteristic);
-        await characteristic.writeValue(data);
-        userDataState.textContent = `Sent: ${message}`;
-    } catch (error) {
-        console.error(error);
-        userDataState.textContent = "Error sending data.";
-    }
+    // try {
+    //     const characteristic = await bleServiceFound.getCharacteristic(ledCharacteristic);
+    //     await characteristic.writeValue(data);
+    //     userDataState.textContent = `Sent: ${message}`;
+    // } catch (error) {
+    //     console.error(error);
+    //     userDataState.textContent = "Error sending data.";
+    // }
 }
 
     // Check if BLE is available in your Browser
@@ -225,12 +231,12 @@
         timestampContainer.innerHTML = getDateTime();
     }
 
-    function writeOnCharacteristic(value){
+    function writeOnCharacteristic(type,value){
         if (bleServer && bleServer.connected) {
             bleServiceFound.getCharacteristic(ledCharacteristic)
             .then(characteristic => {
                 console.log("Found the LED characteristic: ", characteristic.uuid);
-                const data = new Uint8Array([value]);
+                const data = new Uint8Array([type, value]);
                 return characteristic.writeValue(data);
             })
             .then(() => {
@@ -286,7 +292,9 @@
         var datetime = day + "/" + month + "/" + year + " at " + hours + ":" + minutes + ":" + seconds;
         return datetime;
     }
-
+    function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
 </script>
 
