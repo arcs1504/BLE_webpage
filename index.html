@@ -135,7 +135,7 @@
         const height = (document.getElementById("height").value)*100;
         const weight = document.getElementById("weight").value;
         const userDataState = document.getElementById("userDataState");
-        writeOnCharacteristic(2, height)
+        writeOnCharacteristic(2, height);
         sleep(500).then(() => (writeOnCharacteristic(3,weight))); //a faire :essaye sans le sleep et just avec .then
 
     // if (!height || !weight) {
@@ -238,7 +238,13 @@
             .then(characteristic => {
                 length = String(value).length;
                 console.log("Found the LED characteristic: ", characteristic.uuid);
-                const data = new Uint8Array([type, 999, length, 999, value]); // a faire :interchanger lenght et value
+                strtype = type.toString(10);
+                strlength = length.toString(10);
+                strvalue = value.toString(10);
+            
+                const data = new Uint8Array([strtype, ';', strlength, ';', strvalue]); // a faire :interchanger lenght et value
+                
+                console.log(data)
                 return characteristic.writeValue(data);
             })
             .then(() => {
