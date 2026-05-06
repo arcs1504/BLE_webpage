@@ -242,7 +242,7 @@
                 // strlength = length.toString(10);
                 // strvalue = value.toString(10);
                 //const data = new Uint8Array([strtype, ';', strlength, ';', strvalue]); // a faire :interchanger lenght et value
-                const stringToSend = type.toString(10) + ';' + length.toString(10) + ';' +value.toString(10);
+                const stringToSend = type.toString(10) + ';' + length.toString(10) + ';' + value.toString(10) + '$';
                 let encoder = new TextEncoder(); // Encode string to bytes
                 let data = encoder.encode(stringToSend); 
                 console.log(data)
