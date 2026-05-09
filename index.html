@@ -24,14 +24,8 @@
         <div class="button-row">
           <button id="connectBleButton" class="connectButton">Connect</button>
           <button id="disconnectBleButton" class="disconnectButton">Disconnect</button>
-          <button id="resetButton" class="offButton">Reset</button>
-          <div id="battery">
-            <div id="charge"></div>
-            <div id="charge-level"></div>
-        </div>        
+          <button id="resetButton" class="offButton">Reset</button>     
         </div>
-
-        
 
         <div class="status-box">
           <p class="gray-label">
@@ -56,7 +50,11 @@
             <button id="openFullscreen" class="genericButton" onclick="openFullscreen();">Open Fullscreen</button>
             <button id="closeFullscreen" class="genericButton" onclick="closeFullscreen();">Close Fullscreen</button>
             <!--<img src="BioGenius.png" alt="Biogenius" style="float:left;width:55px;height:55px;">-->
-            <img src="BioGenius.png" alt="Trulli" width="55" height="55">
+            <div id="battery">
+                <div id="charge"></div>
+                <div id="charge-level"></div>
+            </div>   
+            <!--<img src="BioGenius.png" alt="Trulli" width="55" height="55">-->
         </div>
         </div>     
       </div>
