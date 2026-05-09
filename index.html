@@ -25,7 +25,13 @@
           <button id="connectBleButton" class="connectButton">Connect</button>
           <button id="disconnectBleButton" class="disconnectButton">Disconnect</button>
           <button id="resetButton" class="offButton">Reset</button>
+          <div id="battery">
+            <div id="charge"></div>
+            <div id="charge-level"></div>
+        </div>        
         </div>
+
+        
 
         <div class="status-box">
           <p class="gray-label">
@@ -89,6 +95,8 @@
     const latestValueSent = document.getElementById('valueSent');
     const bleStateContainer = document.getElementById('bleState');
     const timestampContainer = document.getElementById('timestamp');
+    const chargeLevel = document.getElementById("charge-level");
+    const charge = document.getElementById("charge");
 
     const userDataForm = document.getElementById("userDataForm");
     const userDataState = document.getElementById("userDataState");
@@ -97,13 +105,13 @@
     //Define BLE Device Specs
     var deviceName ='BioGenius';
     var bleService = '19b10000-e8f2-537e-4f6c-d104768a1214';
-    var ledCharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
-    var sensorCharacteristic= '19b10001-e8f2-537e-4f6c-d104768a1214';
+    var receiveCharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
+    var sendCharacteristic= '19b10001-e8f2-537e-4f6c-d104768a1214';
 
     //Global Variables to Handle Bluetooth
     var bleServer;
     var bleServiceFound;
-    var sensorCharacteristicFound;
+    var sendCharacteristicFound;
 
     // Connect Button (search for BLE Devices only if BLE is available)
     connectButton.addEventListener('click', (event) => {
@@ -115,7 +123,7 @@
     // Disconnect Button
     disconnectButton.addEventListener('click', disconnectDevice);
 
-    // Write to the ESP32 LED Characteristic
+    // Write to the ESP32 receive Characteristic
     stopButton.addEventListener('click', () => writeOnCharacteristic("1","1"));
     resetButton.addEventListener('click', () => writeOnCharacteristic("1","2"));
 
@@ -125,11 +133,6 @@
         event.preventDefault(); // Prevent form from submitting normally
         sendUserData();
     })
-    // userDataForm.addEventListener("submit", function(event) {
-    //     event.preventDefault(); // Prevent form from submitting normally
-    //     writeOnCharacteristic(2,(document.getElementById("height").value));
-    //     writeOnCharacteristic(3,(document.getElementById("weight").value));
-    // });
     
     async function sendUserData() {
         const height = (document.getElementById("height").value)*100;
@@ -137,30 +140,7 @@
         const userDataState = document.getElementById("userDataState");
         writeOnCharacteristic(2, height);
         sleep(500).then(() => (writeOnCharacteristic(3,weight))); //a faire :essaye sans le sleep et just avec .then
-
-    // if (!height || !weight) {
-    //     userDataState.textContent = "Enter height and weight.";
-    //     return;
-    // }
-
-    // if (!bleServer || !bleServer.connected) {
-    //     userDataState.textContent = "Bluetooth is not connected.";
-    //     return;
-    // }
-
-    // const message = `${height},${weight}`;
-    // const data = new TextEncoder().encode(message);
-    // //await characteristic.writeValue(data);
-
-    // try {
-    //     const characteristic = await bleServiceFound.getCharacteristic(ledCharacteristic);
-    //     await characteristic.writeValue(data);
-    //     userDataState.textContent = `Sent: ${message}`;
-    // } catch (error) {
-    //     console.error(error);
-    //     userDataState.textContent = "Error sending data.";
-    // }
-}
+    }
 
     // Check if BLE is available in your Browser
     function isWebBluetoothEnabled() {
@@ -195,11 +175,11 @@
         .then(service => {
             bleServiceFound = service;
             console.log("Service discovered:", service.uuid);
-            return service.getCharacteristic(sensorCharacteristic);
+            return service.getCharacteristic(sendCharacteristic);
         })
         .then(characteristic => {
             console.log("Characteristic discovered:", characteristic.uuid);
-            sensorCharacteristicFound = characteristic;
+            sendCharacteristicFound = characteristic;
             characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicChange);
             characteristic.startNotifications();
             console.log("Notifications Started.");
@@ -226,22 +206,19 @@
 
     function handleCharacteristicChange(event){
         const newValueReceived = new TextDecoder().decode(event.target.value);
+        let batteryLevel = `${parseInt(newValueReceived)}%`;
+        charge.style.width = batteryLevel;
+        chargeLevel.textContent = batteryLevel;
         console.log("Characteristic value changed: ", newValueReceived);
-        retrievedValue.innerHTML = newValueReceived;
-        timestampContainer.innerHTML = getDateTime();
     }
 
     function writeOnCharacteristic(type,value){
         if (bleServer && bleServer.connected) {
-            bleServiceFound.getCharacteristic(ledCharacteristic)
+            bleServiceFound.getCharacteristic(receiveCharacteristic)
             
             .then(characteristic => {
                 length = String(value).length;
                 console.log("Found the characteristic: ", characteristic.uuid);
-                // strtype = type.toString(10);
-                // strlength = length.toString(10);
-                // strvalue = value.toString(10);
-                //const data = new Uint8Array([strtype, ';', strlength, ';', strvalue]); // a faire :interchanger lenght et value
                 const stringToSend = length.toString(10) + ';' + type.toString(10) + ';' + value.toString(10) + '$';
                 let encoder = new TextEncoder(); // Encode string to bytes
                 let data = encoder.encode(stringToSend); 
@@ -250,10 +227,10 @@
             })
             .then(() => {
                 latestValueSent.innerHTML = value;
-                console.log("Value written to LEDcharacteristic:", value);
+                console.log("Value written to receive characteristic:", value);
             })
             .catch(error => {
-                console.error("Error writing to the LED characteristic: ", error);
+                console.error("Error writing to the receive characteristic: ", error);
             });
         } else {
             console.error ("Bluetooth is not connected. Cannot write to characteristic.")
@@ -264,8 +241,8 @@
     function disconnectDevice() {
         console.log("Disconnect Device.");
         if (bleServer && bleServer.connected) {
-            if (sensorCharacteristicFound) {
-                sensorCharacteristicFound.stopNotifications()
+            if (sendCharacteristicFound) {
+                sendCharacteristicFound.stopNotifications()
                     .then(() => {
                         console.log("Notifications Stopped");
                         return bleServer.disconnect();
@@ -289,18 +266,6 @@
         }
     }
 
-    function getDateTime() {
-        var currentdate = new Date();
-        var day = ("00" + currentdate.getDate()).slice(-2); // Convert day to string and slice
-        var month = ("00" + (currentdate.getMonth() + 1)).slice(-2);
-        var year = currentdate.getFullYear();
-        var hours = ("00" + currentdate.getHours()).slice(-2);
-        var minutes = ("00" + currentdate.getMinutes()).slice(-2);
-        var seconds = ("00" + currentdate.getSeconds()).slice(-2);
-
-        var datetime = day + "/" + month + "/" + year + " at " + hours + ":" + minutes + ":" + seconds;
-        return datetime;
-    }
     function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
     }
